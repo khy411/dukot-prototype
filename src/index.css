@@ -1,0 +1,450 @@
+@import 'tailwindcss';
+
+@font-face {
+  font-family: 'Inter:Black';
+  src: url('https://static.figma.com/font/Inter_1') format('woff2');
+  font-style: normal;
+  font-weight: 900;
+}
+
+@font-face {
+  font-family: 'Inter:Bold';
+  src: url('https://static.figma.com/font/Inter_1') format('woff2');
+  font-style: normal;
+  font-weight: 700;
+}
+
+@font-face {
+  font-family: 'Inter:Semi Bold';
+  src: url('https://static.figma.com/font/Inter_1') format('woff2');
+  font-style: normal;
+  font-weight: 600;
+}
+
+:root {
+  background: #6d6974;
+  color: #171316;
+  font-family: 'Inter:Semi Bold', Inter, sans-serif;
+  font-synthesis: none;
+}
+
+@layer base {
+  body {
+    min-width: 320px;
+    min-height: 100dvh;
+    overflow-x: hidden;
+  }
+
+  button {
+    cursor: pointer;
+  }
+}
+
+.exhibit-page {
+  display: grid;
+  min-height: 100dvh;
+  place-items: center;
+  overflow: hidden;
+}
+
+.textile-frame {
+  display: grid;
+  width: 100%;
+  min-height: 100dvh;
+  padding: clamp(1.8rem, 4vw, 3.5rem);
+  background: url('/assets/b056d.png') center / cover no-repeat;
+}
+
+.exhibit-panel {
+  display: grid;
+  min-height: 0;
+  grid-template-rows: auto 1fr;
+  padding: clamp(1.5rem, 3vw, 3rem);
+  border-radius: 1.25rem;
+  background: #e7daf1;
+}
+
+.title-row {
+  position: relative;
+  display: grid;
+  height: clamp(2.8rem, 5vw, 4.2rem);
+  place-items: center;
+  overflow: hidden;
+}
+
+.title-row h1 {
+  position: relative;
+  z-index: 1;
+  padding: 0 clamp(1rem, 2vw, 2rem);
+  background: #e7daf1;
+  background-image: linear-gradient(#47033b, #ad0891);
+  background-clip: text;
+  color: transparent;
+  font-family: 'Inter:Black', Inter, sans-serif;
+  font-size: clamp(1.7rem, 3.1vw, 2.9rem);
+  font-weight: 900;
+  line-height: normal;
+}
+
+.title-rule {
+  position: absolute;
+  inset: 50% 0 auto;
+  height: 6px;
+}
+
+.title-rule img {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(90deg) scale(0.95);
+}
+
+.exhibit-grid {
+  display: grid;
+  min-height: 0;
+  grid-template-columns: minmax(0, 1.12fr) minmax(19rem, 1fr);
+  gap: clamp(1.4rem, 3vw, 3rem);
+}
+
+/* Stage shrinks to fit (minmax(0, 1fr)) so the slider row always shows */
+.artifact-column {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: 0.85rem;
+  min-width: 0;
+}
+
+.artifact-column h2 {
+  text-align: center;
+  font-family: 'Inter:Bold', Inter, sans-serif;
+  font-size: clamp(1.05rem, 1.9vw, 1.8rem);
+  font-weight: 700;
+  line-height: normal;
+}
+
+.artifact-stage {
+  position: relative;
+  min-height: clamp(20rem, 43vw, 36rem);
+  overflow: hidden;
+  border: clamp(3px, 0.4vw, 5px) solid transparent;
+  border-radius: 1.25rem;
+  background:
+    linear-gradient(#f3f2f3, #f3f2f3) padding-box,
+    linear-gradient(180deg, #47033b, #ad0891) border-box;
+}
+
+.artifact-number {
+  position: absolute;
+  right: 1.5rem;
+  bottom: 1rem;
+  color: rgb(71 3 59 / 9%);
+  font-family: 'Inter:Black', Inter, sans-serif;
+  font-size: clamp(3.5rem, 8vw, 7rem);
+  font-weight: 900;
+  line-height: 1;
+  transition: opacity 180ms ease;
+}
+
+.story-card {
+  display: flex;
+  min-height: clamp(20rem, 43vw, 36rem);
+  flex-direction: column;
+  justify-content: space-between;
+  padding: clamp(1.5rem, 3vw, 2.7rem);
+  border-radius: clamp(1.4rem, 2.5vw, 2rem);
+  background: #413737;
+  color: #f6e7e7;
+  font-style: italic;
+}
+
+.story-card > p {
+  max-width: 15rem;
+  margin: auto;
+  white-space: pre-line;
+  text-align: center;
+  font-family: 'Inter:Bold', Inter, sans-serif;
+  font-size: clamp(1.05rem, 1.7vw, 1.5rem);
+  font-style: italic;
+  font-synthesis: style;
+  font-weight: 700;
+  line-height: 1.04;
+
+   animation: blurb-in 240ms ease;
+}
+
+@keyframes blurb-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.4rem);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .story-card > p {
+    animation: none;
+  }
+}
+
+.artifact-nav {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.artifact-nav button {
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
+  gap: 0.65rem;
+  border-radius: 0.55rem;
+  color: #e7daf1;
+  font-family: 'Inter:Semi Bold', Inter, sans-serif;
+  font-size: clamp(0.95rem, 1.5vw, 1.3rem);
+  font-weight: 600;
+  transition:
+    background-color 160ms ease,
+    transform 160ms ease;
+}
+
+.artifact-nav button:last-child {
+  justify-content: flex-end;
+}
+
+.artifact-nav button:hover {
+  background: rgb(231 218 241 / 10%);
+}
+
+.artifact-nav button:active {
+  transform: scale(0.97);
+}
+
+.artifact-nav button:focus-visible {
+  outline: 2px solid #e7daf1;
+  outline-offset: 4px;
+}
+
+.arrow {
+  flex: none;
+}
+
+.arrow-left {
+  transform: rotate(-90deg);
+}
+
+.arrow-right {
+  transform: rotate(90deg);
+}
+
+.position {
+  color: rgb(231 218 241 / 55%);
+  font-size: 0.75rem;
+}
+
+/* Moved above the landscape media query so its overrides win by source order */
+.layer-caption {
+  position: absolute;
+  inset: auto 0.75rem 0.75rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.6rem;
+  background: rgb(65 55 55 / 85%);
+  color: #f6e7e7;
+  font-size: clamp(0.7rem, 1.1vw, 0.9rem);
+  text-align: center;
+  pointer-events: none;
+}
+
+.reveal-bar {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.timeline-control {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.timeline-steps {
+  display: flex;
+  justify-content: center;
+  gap: clamp(0.35rem, 1vw, 0.8rem);
+  overflow-x: auto;
+  padding: 0.15rem 0.1rem 0.3rem;
+}
+
+.timeline-steps button {
+  flex: none;
+  padding: 0.35rem 0.6rem;
+  border: 1px solid rgb(71 3 59 / 22%);
+  border-radius: 999px;
+  color: #47033b;
+  font-size: clamp(0.65rem, 0.9vw, 0.8rem);
+  white-space: nowrap;
+}
+
+.timeline-steps button[aria-current="step"] {
+  background: #47033b;
+  color: #fff;
+}
+
+.design-cta,
+.exhibit-gallery-link {
+  align-self: center;
+  padding: 0.7rem 0.9rem;
+  border-radius: 0.55rem;
+  color: #e7daf1;
+  font-family: 'Inter:Semi Bold', Inter, sans-serif;
+  font-size: clamp(0.85rem, 1.2vw, 1rem);
+  font-weight: 600;
+  text-align: center;
+}
+
+.design-cta {
+  background: linear-gradient(#47033b, #ad0891);
+}
+
+.exhibit-gallery-link {
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+}
+
+.design-cta:hover,
+.exhibit-gallery-link:hover {
+  filter: brightness(1.15);
+}
+
+.design-cta:focus-visible,
+.exhibit-gallery-link:focus-visible,
+.timeline-steps button:focus-visible {
+  outline: 2px solid #e7daf1;
+  outline-offset: 3px;
+}
+
+.reveal-note {
+  margin-bottom: 1rem;
+  color: #e7daf1;
+  text-align: center;
+  font-size: clamp(0.85rem, 1.3vw, 1.1rem);
+  font-weight: 600;
+  line-height: 1.3;
+  opacity: 0;
+  transform: translateY(0.4rem);
+  transition:
+    opacity 240ms ease,
+    transform 240ms ease;
+  pointer-events: none;
+}
+
+.reveal-note[data-visible='true'] {
+  opacity: 1;
+  transform: none;
+}
+
+@media (orientation: landscape) and (max-height: 600px) {
+  .textile-frame {
+    height: 100dvh;
+    min-height: 0;
+    padding: clamp(0.65rem, 2.5vh, 1rem);
+  }
+
+  .exhibit-panel {
+    min-height: 0;
+    overflow: hidden;
+    padding: clamp(0.75rem, 2.5vh, 1.25rem);
+    border-radius: 0.85rem;
+  }
+
+  .title-row {
+    height: clamp(2rem, 10vh, 2.8rem);
+  }
+
+  .title-row h1 {
+    font-size: clamp(1.2rem, 5vh, 1.8rem);
+  }
+
+  .exhibit-grid {
+    min-height: 0;
+    grid-template-columns: minmax(0, 1.12fr) minmax(15rem, 1fr);
+    gap: clamp(0.75rem, 2vw, 1.4rem);
+  }
+
+  .artifact-column {
+    gap: 0.4rem;
+  }
+
+  .artifact-column h2 {
+    font-size: clamp(0.8rem, 3.5vh, 1.1rem);
+  }
+
+  .artifact-stage,
+  .story-card {
+    min-height: 0;
+  }
+
+  .story-card {
+    overflow: hidden;
+    padding: clamp(0.85rem, 3vh, 1.4rem);
+    border-radius: 1rem;
+  }
+
+  .story-card > p {
+    font-size: clamp(0.8rem, 3.5vh, 1.05rem);
+  }
+
+  .artifact-nav button {
+    min-height: 2rem;
+    font-size: clamp(0.75rem, 3.5vh, 1rem);
+  }
+
+  .position {
+    display: none;
+  }
+
+  .layer-caption {
+    font-size: 0.65rem;
+    padding: 0.3rem 0.5rem;
+  }
+
+  .reveal-bar {
+    font-size: 0.7rem;
+  }
+
+  .timeline-steps button {
+    padding: 0.25rem 0.45rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .artifact-nav button {
+    transition: none;
+  }
+}
+
+.rotate-hint {
+  display: none;
+}
+
+@media (orientation: portrait) and (max-width: 760px) {
+  .rotate-hint {
+    position: fixed;
+    inset: 0;
+    z-index: 50;
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    gap: 1rem;
+    padding: 2rem;
+    background: #413737;
+    color: #f6e7e7;
+    text-align: center;
+    font-family: 'Inter:Bold', Inter, sans-serif;
+  }
+
+  .rotate-hint span {
+    font-size: 4rem;
+  }
+}

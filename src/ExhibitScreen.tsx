@@ -5,6 +5,8 @@ import ModelCanvas from "./ModelCanvas"
 import type { GalleryWork } from "./Work"
 import { publicAsset } from "./publicAsset"
 
+const EMPTY_MOTIFS: GalleryWork["motifs"] = []
+
 export default function ExhibitScreen({
   work,
 
@@ -39,7 +41,7 @@ export default function ExhibitScreen({
       ? work.contributions[timelineIndex - 2]
       : undefined
 
-  const initialMotifs = currentContribution?.motifs ?? []
+  const initialMotifs = currentContribution?.motifs ?? EMPTY_MOTIFS
 
   const reveal = timelineIndex === 0 ? 1 : 0
 
@@ -80,10 +82,6 @@ export default function ExhibitScreen({
 
   return (
     <main className="exhibit-page">
-      <div className="rotate-hint" role="alert">
-        <span aria-hidden="true">⟳</span>
-        <p>Please rotate your phone to landscape</p>
-      </div>
       <section
         className="textile-frame"
         aria-label="Dukot interactive artifact exhibit"
@@ -104,7 +102,6 @@ export default function ExhibitScreen({
                 aria-label={`${artifactName} display area`}
               >
                 <ModelCanvas
-                  key={`${work?.id ?? "landing"}-${timelineIndex}`}
                   initialMotifs={initialMotifs}
                   motifUrl={null}
                   maxMotifs={initialMotifs.length}

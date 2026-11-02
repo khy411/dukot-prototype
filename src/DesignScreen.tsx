@@ -239,10 +239,6 @@ export default function DesignScreen({
 
   return (
     <main className="design-screen page-shell">
-      <div className="rotate-hint" role="alert">
-        <span aria-hidden="true">⟳</span>
-        <p>Please rotate your phone to landscape</p>
-      </div>
       <section className="woven-mat" aria-label="Dukot pattern editor">
         <div className="editor-panel">
           <header className="editor-header">

@@ -1,4 +1,10 @@
-import { forwardRef, useEffect, useImperativeHandle, useRef } from "react"
+import {
+  forwardRef,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from "react"
 
 import * as THREE from "three"
 
@@ -84,6 +90,8 @@ type Placement = {
   y: number
 }
 
+const EMPTY_MOTIFS: DesignMotif[] = []
+
 function buildDecal(p: Omit<Placement, "mesh">) {
   const helper = new THREE.Object3D()
 
@@ -118,8 +126,18 @@ function buildDecal(p: Omit<Placement, "mesh">) {
   return new THREE.Mesh(geo, mat)
 }
 
-async function loadNormalized(url: string) {
-  const gltf = await new GLTFLoader().loadAsync(url)
+async function loadNormalized(url: string, useMeshoptDecoder = false) {
+  const loader = new GLTFLoader()
+
+  if (useMeshoptDecoder) {
+    const { MeshoptDecoder } = await import(
+      "three/examples/jsm/libs/meshopt_decoder.module.js"
+    )
+
+    loader.setMeshoptDecoder(MeshoptDecoder)
+  }
+
+  const gltf = await loader.loadAsync(url)
 
   const model = gltf.scene
 
@@ -189,7 +207,7 @@ const ModelCanvas = forwardRef<ModelCanvasHandle, Props>(function ModelCanvas(
 
     motifUrl,
 
-    initialMotifs = [],
+    initialMotifs = EMPTY_MOTIFS,
 
     motifSize,
 
@@ -205,6 +223,14 @@ const ModelCanvas = forwardRef<ModelCanvasHandle, Props>(function ModelCanvas(
   ref,
 ) {
   const containerRef = useRef<HTMLDivElement>(null)
+
+  const requestIndigenousLoadRef = useRef<() => void>(() => {})
+
+  const syncInitialMotifsRef = useRef<() => void>(() => {})
+
+  const [indigenousStatus, setIndigenousStatus] = useState<
+    "idle" | "loading" | "error"
+  >("idle")
 
   const propsRef = useRef({
     motifUrl,
@@ -311,6 +337,8 @@ const ModelCanvas = forwardRef<ModelCanvasHandle, Props>(function ModelCanvas(
 
     let indigenous: Awaited<ReturnType<typeof loadNormalized>> | null = null
 
+    let indigenousLoading = false
+
     let cancelled = false
 
     const textureLoader = new THREE.TextureLoader()
@@ -326,18 +354,6 @@ const ModelCanvas = forwardRef<ModelCanvasHandle, Props>(function ModelCanvas(
     controls.minDistance = 2
 
     controls.maxDistance = 6
-
-    loadNormalized(revealModelUrl)
-
-      .then((r) => {
-        if (cancelled) return
-
-        indigenous = r
-
-        scene.add(r.wrapper)
-      })
-
-      .catch((err) => console.error("Indigenous model failed:", err))
 
     const notify = () =>
       propsRef.current.onPlacementsChange?.(placements.length)
@@ -421,6 +437,57 @@ const ModelCanvas = forwardRef<ModelCanvasHandle, Props>(function ModelCanvas(
       return true
     }
 
+    const syncInitialMotifs = () => {
+      placements.splice(0).forEach(disposePlacement)
+
+      if (!santo) return
+
+      const rect = renderer.domElement.getBoundingClientRect()
+
+      propsRef.current.initialMotifs.forEach((motif) => {
+        placeAt(
+          motif.url,
+
+          rect.left + rect.width * motif.x,
+
+          rect.top + rect.height * motif.y,
+
+          motif.size,
+        )
+      })
+    }
+
+    syncInitialMotifsRef.current = syncInitialMotifs
+
+    const loadIndigenous = () => {
+      if (indigenous || indigenousLoading || cancelled) return
+
+      indigenousLoading = true
+
+      setIndigenousStatus("loading")
+
+      loadNormalized(revealModelUrl, true)
+        .then((model) => {
+          if (cancelled) return
+
+          indigenous = model
+
+          scene.add(model.wrapper)
+
+          setIndigenousStatus("idle")
+        })
+        .catch((error: unknown) => {
+          console.error("Indigenous model failed:", error)
+
+          if (!cancelled) setIndigenousStatus("error")
+        })
+        .finally(() => {
+          indigenousLoading = false
+        })
+    }
+
+    requestIndigenousLoadRef.current = loadIndigenous
+
     loadNormalized(modelUrl)
 
       .then((r) => {
@@ -430,19 +497,7 @@ const ModelCanvas = forwardRef<ModelCanvasHandle, Props>(function ModelCanvas(
 
         scene.add(r.wrapper)
 
-        propsRef.current.initialMotifs.forEach((motif) => {
-          const rect = renderer.domElement.getBoundingClientRect()
-
-          placeAt(
-            motif.url,
-
-            rect.left + rect.width * motif.x,
-
-            rect.top + rect.height * motif.y,
-
-            motif.size,
-          )
-        })
+        syncInitialMotifs()
       })
 
       .catch((err) => console.error("Santo Niño model failed:", err))
@@ -569,6 +624,10 @@ const ModelCanvas = forwardRef<ModelCanvasHandle, Props>(function ModelCanvas(
     return () => {
       cancelled = true
 
+      requestIndigenousLoadRef.current = () => {}
+
+      syncInitialMotifsRef.current = () => {}
+
       cancelAnimationFrame(raf)
 
       ro.disconnect()
@@ -600,6 +659,14 @@ const ModelCanvas = forwardRef<ModelCanvasHandle, Props>(function ModelCanvas(
   }, [modelUrl, revealModelUrl])
 
   useEffect(() => {
+    syncInitialMotifsRef.current()
+  }, [initialMotifs])
+
+  useEffect(() => {
+    if (reveal > 0.01) requestIndigenousLoadRef.current()
+  }, [reveal])
+
+  useEffect(() => {
     rebuildLastRef.current()
   }, [size, rotation])
 
@@ -608,7 +675,22 @@ const ModelCanvas = forwardRef<ModelCanvasHandle, Props>(function ModelCanvas(
       ref={containerRef}
       className="absolute inset-0 touch-none"
       id="model-canvas"
-    />
+    >
+      {reveal > 0.01 && indigenousStatus === "loading" && (
+        <div className="model-load-status" role="status">
+          Loading Indigenous layer…
+        </div>
+      )}
+      {reveal > 0.01 && indigenousStatus === "error" && (
+        <button
+          className="model-load-status"
+          onClick={() => requestIndigenousLoadRef.current()}
+          type="button"
+        >
+          Indigenous layer failed to load. Tap to retry.
+        </button>
+      )}
+    </div>
   )
 })
 

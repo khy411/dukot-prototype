@@ -142,5 +142,10 @@
 *.stp                filter=lfs diff=lfs merge=lfs -text
 *.iges               filter=lfs diff=lfs merge=lfs -text
 *.stl                filter=lfs diff=lfs merge=lfs -text
+
+# Public PNGs are served directly by the static Vite deployment and must be
+# stored as image blobs instead of Git LFS pointer files.
+/public/*.png         -filter -diff -merge -text
+/public/**/*.png      -filter -diff -merge -text
 *.nc                 filter=lfs diff=lfs merge=lfs -text
 *.mat                filter=lfs diff=lfs merge=lfs -text

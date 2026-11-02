@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import ModelCanvas from "./ModelCanvas"
 
 import type { GalleryWork } from "./Work"
+import { publicAsset } from "./publicAsset"
 
 export default function ExhibitScreen({
   work,
@@ -90,7 +91,7 @@ export default function ExhibitScreen({
         <div className="exhibit-panel">
           <header className="title-row">
             <div className="title-rule" aria-hidden="true">
-              <img src="/assets/80349.svg" alt="" />
+              <img src={publicAsset("assets/80349.svg")} alt="" />
             </div>
             <h1>DUKOT</h1>
           </header>

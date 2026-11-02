@@ -3,6 +3,7 @@ import ModelCanvas from "./ModelCanvas"
 import "./Gallery.css"
 import { createShareArtifact } from "./ShareArtifact"
 import type { GalleryWork } from "./Work"
+import { publicAsset } from "./publicAsset"
 
 function ShareArtifactModal({
   work,
@@ -171,7 +172,7 @@ export default function GalleryScreen({
       <section className="gallery-panel" aria-labelledby="gallery-title">
         <header className="gallery-header">
           <div className="gallery-title-rule" aria-hidden="true">
-            <img src="/assets/80349.svg" alt="" />
+            <img src={publicAsset("assets/80349.svg")} alt="" />
           </div>
           <h1 id="gallery-title">DUKOT</h1>
           <p>GALLERY</p>

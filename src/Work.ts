@@ -1,3 +1,5 @@
+import { publicAsset } from "./publicAsset"
+
 export type DesignMotif = {
   url: string
 
@@ -34,7 +36,14 @@ export const sampleWorks: GalleryWork[] = [
 
     name: "WOVEN MEMORY",
 
-    motifs: [{ url: "/designs/Group%2031.png", x: 0.5, y: 0.5, size: 0.2 }],
+    motifs: [
+      {
+        url: publicAsset("designs/Group%2031.png"),
+        x: 0.5,
+        y: 0.5,
+        size: 0.2,
+      },
+    ],
 
     contributions: [
       {
@@ -43,7 +52,14 @@ export const sampleWorks: GalleryWork[] = [
         reason:
           "A pattern inspired by the colors and stories passed down through generations.",
 
-        motifs: [{ url: "/designs/Group%2031.png", x: 0.5, y: 0.5, size: 0.2 }],
+        motifs: [
+          {
+            url: publicAsset("designs/Group%2031.png"),
+            x: 0.5,
+            y: 0.5,
+            size: 0.2,
+          },
+        ],
       },
     ],
   },
@@ -53,7 +69,14 @@ export const sampleWorks: GalleryWork[] = [
 
     name: "LIVING TRADITION",
 
-    motifs: [{ url: "/designs/Vector-1.png", x: 0.5, y: 0.5, size: 0.2 }],
+    motifs: [
+      {
+        url: publicAsset("designs/Vector-1.png"),
+        x: 0.5,
+        y: 0.5,
+        size: 0.2,
+      },
+    ],
 
     contributions: [
       {
@@ -62,7 +85,14 @@ export const sampleWorks: GalleryWork[] = [
         reason:
           "A design that celebrates the craft and creativity of our community.",
 
-        motifs: [{ url: "/designs/Vector-1.png", x: 0.5, y: 0.5, size: 0.2 }],
+        motifs: [
+          {
+            url: publicAsset("designs/Vector-1.png"),
+            x: 0.5,
+            y: 0.5,
+            size: 0.2,
+          },
+        ],
       },
     ],
   },

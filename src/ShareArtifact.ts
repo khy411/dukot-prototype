@@ -1,4 +1,5 @@
 import type { GalleryWork } from "./Work"
+import { publicAsset } from "./publicAsset"
 
 const canvasWidth = 1200
 
@@ -93,7 +94,7 @@ export async function createShareArtifact(work: GalleryWork): Promise<Blob> {
   if (!work.image) throw new Error("This artifact has no published image yet.")
 
   const [textile, artwork, ...motifImages] = await Promise.all([
-    loadImage("/assets/b056d.png"),
+    loadImage(publicAsset("assets/b056d.png")),
 
     loadImage(work.image),
 

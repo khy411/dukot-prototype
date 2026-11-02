@@ -8,6 +8,7 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js"
 
 import { DecalGeometry } from "three/examples/jsm/geometries/DecalGeometry.js"
 import type { DesignMotif } from "./Work"
+import { publicAsset } from "./publicAsset"
 
 export type ModelCanvasHandle = {
   /** Place a motif where the given screen point hits the model. Returns false if nothing was placed. */
@@ -180,9 +181,9 @@ function setOpacity(
 
 const ModelCanvas = forwardRef<ModelCanvasHandle, Props>(function ModelCanvas(
   {
-    modelUrl = "/model.glb",
+    modelUrl = publicAsset("model.glb"),
 
-    revealModelUrl = "/model_2.glb",
+    revealModelUrl = publicAsset("model_2.glb"),
 
     reveal = 0,
 

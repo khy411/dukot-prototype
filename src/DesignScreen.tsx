@@ -9,6 +9,7 @@ import { createPortal } from "react-dom"
 
 import ModelCanvas, { type ModelCanvasHandle } from "./ModelCanvas"
 import type { DesignMotif } from "./Work"
+import { publicAsset } from "./publicAsset"
 
 import "./Design.css"
 
@@ -83,7 +84,7 @@ const designFiles = [
 const patterns: Pattern[] = designFiles.map((file, index) => ({
   id: `design-${index + 1}`,
 
-  src: `/designs/${encodeURIComponent(file)}`,
+  src: publicAsset(`designs/${encodeURIComponent(file)}`),
 
   label: `Design ${index + 1}`,
 }))
@@ -252,7 +253,7 @@ export default function DesignScreen({
 
           <nav className="page-navigation" aria-label="Artifact pages">
             <button type="button" onClick={onBack}>
-              <img src="/assets/c113a.svg" alt="" />
+              <img src={publicAsset("assets/c113a.svg")} alt="" />
               Previous Page
             </button>
             <div className="design-pagination" aria-label="Design pages">

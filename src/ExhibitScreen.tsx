@@ -7,6 +7,12 @@ import { publicAsset } from "./publicAsset"
 
 const EMPTY_MOTIFS: GalleryWork["motifs"] = []
 
+const WELCOME_BLURB = `Welcome to Dukot!
+
+Dukot takes its name from two meanings. The first, takes its meaning from the Tagalog language which means to snatch or take away. The second, takes its meaning from Bisaya, which equates to the burnt rice or crust left at the bottom of the pot.
+
+This exhibit aims to present the effects of historical revisionism on Filipino indigenous culture. You will be able to counter-restore colonial artifacts by adding indigenous designs, and also see others' contributions and how the canvas has evolved over time. Dukot shows that historical revisionism, while a very real part of our history, can be fought against by re-asserting and spreading awareness of our indigenous culture.`
+
 export default function ExhibitScreen({
   work,
 
@@ -78,7 +84,9 @@ export default function ExhibitScreen({
     timelineIndex === 0
       ? "Pansinin kung gaano kadaling natatakpan ang naunang patong."
       : currentContribution?.reason ||
-        "Beneath every santo is an older story. Explore the layers, then add your own design for the next visitor."
+        WELCOME_BLURB
+
+  const isWelcomeBlurb = timelineIndex !== 0 && !currentContribution?.reason
 
   return (
     <main className="exhibit-page">
@@ -143,7 +151,9 @@ export default function ExhibitScreen({
               </div>
             </section>
 
-            <aside className="story-card">
+            <aside
+              className={`story-card${isWelcomeBlurb ? " story-card--intro" : ""}`}
+            >
               <p key={`${timelineIndex}-${blurb}`}>{blurb}</p>
               <button
                 type="button"

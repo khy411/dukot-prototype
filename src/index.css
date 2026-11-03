@@ -172,6 +172,28 @@
    animation: blurb-in 240ms ease;
 }
 
+.story-card--intro {
+  justify-content: flex-start;
+  gap: 1.25rem;
+}
+
+.story-card--intro > p {
+  width: 100%;
+  max-width: none;
+  min-height: 0;
+  max-height: min(58vh, 38rem);
+  flex: 1 1 auto;
+  margin: 0;
+  padding: 0 0.5rem 0.25rem 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-color: #ad0891 rgb(246 231 231 / 18%);
+  scrollbar-width: thin;
+  text-align: left;
+  font-size: clamp(0.95rem, 1.15vw, 1.15rem);
+  line-height: 1.5;
+}
+
 @keyframes blurb-in {
   from {
     opacity: 0;
@@ -488,6 +510,15 @@ button.model-load-status {
     min-height: 14rem;
     gap: 1.25rem;
     padding: 1.25rem;
+  }
+
+  .story-card--intro {
+    min-height: min(68dvh, 42rem);
+  }
+
+  .story-card--intro > p {
+    max-height: min(55dvh, 36rem);
+    font-size: 1rem;
   }
 
   .story-card > p {

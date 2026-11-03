@@ -99,6 +99,8 @@ const decalSize = 0.1
 
 const MAX_PATTERNS = 12
 
+const EMPTY_DESIGN_MOTIFS: DesignMotif[] = []
+
 function PatternPalette({
   items,
 
@@ -153,7 +155,7 @@ function PatternPalette({
 export default function DesignScreen({
   onBack,
   onPublish,
-  initialMotifs = [],
+  initialMotifs = EMPTY_DESIGN_MOTIFS,
   artifactName = "Santo Niño",
 }: {
   onBack: () => void
@@ -310,7 +312,7 @@ export default function DesignScreen({
                 {selected && count === 0 && (
                   <p className="drop-hint">Drop or tap to place</p>
                 )}
-                {count >= MAX_PATTERNS && (
+                {count >= initialMotifs.length + MAX_PATTERNS && (
                   <p className="drop-hint">Limit reached. Undo to add more.</p>
                 )}
               </div>
